@@ -261,19 +261,6 @@ class DataTrainingArguments:
             )
         },
     )
-    metric_for_best_model: Optional[str] = field(
-        default="cer",
-        metadata={"help": "The metric that should be used to select the best model."},
-    )
-    greater_is_better: Optional[bool] = field(
-        default=False,
-        metadata={"help": "Whether to maximize or minimize the metric for the best model."},
-    )
-    load_best_model_at_end: Optional[bool] = field(
-        default=True,
-        metadata={"help": "Whether to load the best model at the end of training."},
-    )
-
 
 @dataclass
 class DataCollatorCTCWithPadding:
