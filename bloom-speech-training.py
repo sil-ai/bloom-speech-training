@@ -729,7 +729,11 @@ def main():
             train_dataset=vectorized_datasets["train"] if training_args.do_train else None,
             eval_dataset=vectorized_datasets["eval"] if training_args.do_eval else None,
             tokenizer=feature_extractor,
+            metric_for_best_model = "cer",
+            load_best_model_at_end = True,
         )
+
+        trainer.add_callback(transformers.EarlyStopping(early_stopping_patience=3))
 
         # 8. Finally, we can start training
 
@@ -788,7 +792,7 @@ def main():
             kwargs["language"] = config_name
 
         if training_args.push_to_hub:
-            trainer.push_to_hub(private=True, **kwargs)
+            trainer.push_to_hub(**kwargs)
         else:
             trainer.create_model_card(**kwargs)
         return results
