@@ -24,13 +24,10 @@ import sys
 import warnings
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Union
-from knockknock import slack_sender
-
 from clearml import Task
 from clearml.config import config_obj 
 import huggingface_hub
 import time
-
 import datasets
 import numpy as np
 import torch
@@ -50,6 +47,8 @@ from transformers import (
     set_seed,
 )
 from transformers.trainer_utils import get_last_checkpoint, is_main_process
+
+from knockknock import slack_sender
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 #check_min_version("4.20.0.dev0")
@@ -394,9 +393,8 @@ def main():
 
     #setup knockknock
     webhook_url = config_obj.get("knockknock.webhook")
-    userid = config_obj.get("knockknock.userid")
 
-    @slack_sender(webhook_url=webhook_url, user_mentions=[userid], channel="#bloom-library-data")
+    @slack_sender(webhook_url=webhook_url, channel="#machine-training-notifications")
     def train():
         parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
         if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
