@@ -730,7 +730,7 @@ def main():
             tokenizer=feature_extractor,
         )
 
-        trainer.add_callback(transformers.EarlyStopping(early_stopping_patience=3))
+        trainer.add_callback(transformers.EarlyStoppingCallback(early_stopping_patience=3))
 
 
         # 8. Finally, we can start training
