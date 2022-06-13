@@ -1,12 +1,15 @@
 accelerate
 datasets >= 2.2.1
-sentencepiece != 0.1.92
 setuptools==59.5.0
 protobuf==3.20.0
-sacrebleu >= 1.4.12
+dill>=0.3.5.1
 tensorboard
 huggingface_hub
 clearml
+librosa
+jiwer
+knockknock
+soundfile
 git+https://github.com/huggingface/transformers
 
 --find-links https://download.pytorch.org/whl/torch_stable.html
