@@ -479,6 +479,13 @@ def main():
                 use_auth_token=data_args.use_auth_token,
             )
 
+            raw_datasets["train"] = load_dataset(
+                data_args.dataset_name,
+                data_args.dataset_config_name,
+                split=data_args.train_split_name,
+                use_auth_token=data_args.use_auth_token,
+            )
+
             if data_args.max_eval_samples is not None:
                 raw_datasets["eval"] = raw_datasets["eval"].select(range(data_args.max_eval_samples))
 
