@@ -199,7 +199,7 @@ class DataTrainingArguments:
         },
     )
     chars_to_ignore: Optional[List[str]] = list_field(
-        default='[\[\]\*\,\¿\¡\?\.\!\-\—\;\:\"\“\%\‘\”\�\']',
+        default=[x for x in '!"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌'],
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
     eval_metrics: List[str] = list_field(
