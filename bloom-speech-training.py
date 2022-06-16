@@ -389,6 +389,7 @@ def main():
     token = config_obj.get("huggingface.token")
     huggingface_hub.hf_api.set_access_token(token)
     huggingface_hub.HfFolder.save_token(token)
+    hfname = huggingface_hub.hf_api.whoami()['name']
 
     #setup knockknock
     webhook_url = config_obj.get("knockknock.webhook")
@@ -791,7 +792,7 @@ def main():
 
         if training_args.push_to_hub:
             trainer.push_to_hub(**kwargs)
-            tokenizer.push_to_hub(**kwargs)
+            tokenizer.push_to_hub(f'{hfname}/{os.path.basename(training_args.output_dir)}')
         else:
             trainer.create_model_card(**kwargs)
         return results
