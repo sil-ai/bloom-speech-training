@@ -199,7 +199,7 @@ class DataTrainingArguments:
         },
     )
     chars_to_ignore: Optional[List[str]] = list_field(
-        default=[x for x in '!"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌\n'],
+        default=[x for x in ' !"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿ʻ̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌\n\t'],
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
     eval_metrics: List[str] = list_field(
@@ -487,9 +487,9 @@ def main():
         # that make training complicated and do not help in transcribing the speech
         # E.g. characters, such as `,` and `.` do not really have an acoustic characteristic
         # that could be easily picked up by the model
-        charstring = "\\".join(data_args.chars_to_ignore)
+        #charstring = "".join(data_args.chars_to_ignore)
         chars_to_ignore_regex = (
-            f'[{charstring}]' if data_args.chars_to_ignore is not None else None
+            f'[{"".join(data_args.chars_to_ignore)}]' if data_args.chars_to_ignore is not None else None
         )
         text_column_name = data_args.text_column_name
 
