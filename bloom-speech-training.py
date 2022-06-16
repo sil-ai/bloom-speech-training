@@ -199,7 +199,7 @@ class DataTrainingArguments:
         },
     )
     chars_to_ignore: Optional[List[str]] = list_field(
-        default=[x for x in ' !"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿ʻ̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌\n\t'],
+        default=[x for x in ' !"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌\n\t'],
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
     eval_metrics: List[str] = list_field(
@@ -493,9 +493,14 @@ def main():
         )
         text_column_name = data_args.text_column_name
 
+        def subtext(text):
+            for char in data_args.chars_to_ignore:
+                text = re.sub(f'[{char}]', '', text)
+            return(text)
+
         def remove_special_characters(batch):
             if chars_to_ignore_regex is not None:
-                batch["target_text"] = re.sub(chars_to_ignore_regex, "", batch[text_column_name]).lower() + " "
+                batch["target_text"] = subtext(batch[text_column_name]).lower() + " "
             else:
                 batch["target_text"] = batch[text_column_name].lower() + " "
             return batch
