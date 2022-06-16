@@ -203,7 +203,7 @@ class DataTrainingArguments:
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
     eval_metrics: List[str] = list_field(
-        default=["wer"],
+        default=["wer", "cer"],
         metadata={"help": "A list of metrics the model should be evaluated on. E.g. `'wer cer'`"},
     )
     max_duration_in_seconds: float = field(
