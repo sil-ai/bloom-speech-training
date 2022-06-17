@@ -199,7 +199,7 @@ class DataTrainingArguments:
         },
     )
     chars_to_ignore: Optional[List[str]] = list_field(
-        default=[x for x in ' !"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌\n\t'],
+        default=[x for x in '!"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌🇧🇬🇸🇺' if not x.isspace()],
         metadata={"help": "A list of characters to remove from the transcripts."},
     )
     eval_metrics: List[str] = list_field(
@@ -499,6 +499,7 @@ def main():
             return(text)
 
         def remove_special_characters(batch):
+            batch[text_column_name] = "".join([' ' if x.isspace() else x for x in batch[text_column_name]])
             if chars_to_ignore_regex is not None:
                 batch["target_text"] = subtext(batch[text_column_name]).lower() + " "
             else:
