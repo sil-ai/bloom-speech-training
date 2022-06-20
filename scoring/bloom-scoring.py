@@ -67,8 +67,8 @@ def main():
             return(text)
 
         def remove_special_characters(batch):
-            batch["text"] = "".join([' ' if x.isspace() else x for x in batch["text"]])
-            batch["text"] = subtext(batch["text"]).lower() + " "
+            batch["labels"] = "".join([' ' if x.isspace() else x for x in batch["labels"]])
+            batch["labels"] = subtext(batch["labels"]).lower() + " "
 
             return batch
 
