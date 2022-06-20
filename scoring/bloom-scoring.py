@@ -1,6 +1,7 @@
 import transformers
 from transformers import AutoModelForCTC, Wav2Vec2Processor
 import datasets
+import time
 import jiwer
 import statistics
 import huggingface_hub
