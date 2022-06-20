@@ -67,8 +67,8 @@ def main():
             return(text)
 
         def remove_special_characters(batch):
-            batch["labels"] = "".join([' ' if x.isspace() else x for x in batch["labels"]])
-            batch["labels"] = subtext(batch["labels"]).lower() + " "
+            batch['text'] = "".join([' ' if x.isspace() else x for x in batch['text']])
+            batch['text'] = subtext(batch['text']).lower() + " "
 
             return batch
 
@@ -81,7 +81,7 @@ def main():
             batch["input_length"] = len(batch["input_values"])
             
             with processor.as_target_processor():
-                batch["labels"] = processor("".join([' ' if x.isspace() else x for x in batch['text']]).lower()).input_ids
+                batch["labels"] = processor(remove_special_characters(batch)['text']).input_ids
             return batch
 
         def clear_unks(text):
@@ -102,7 +102,7 @@ def main():
                     pred_ids = torch.argmax(logits, dim=-1)[0]
 
                     preds.append(clear_unks(processor.decode(pred_ids)))
-                    refs.append(clear_unks(remove_special_characters(item["labels"])))
+                    refs.append(clear_unks(processor.decode(item["labels"], group_tokens=False)))
                 except:
                     torch.cuda.empty_cache()
                     pass
