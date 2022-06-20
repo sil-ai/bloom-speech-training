@@ -87,7 +87,7 @@ def main():
                     logits = model(input_dict.input_values.to("cuda")).logits
                     pred_ids = torch.argmax(logits, dim=-1)[0]
 
-                    preds.append(processor.decode(pred_ids))
+                    preds.append(clear_unks(processor.decode(pred_ids)))
                     refs.append(clear_unks(processor.decode(item["labels"])))
                 except:
                     torch.cuda.empty_cache()
@@ -97,7 +97,7 @@ def main():
         cer = cer_metric.compute(predictions=preds, references=refs)
 
         with open('scores.txt', 'a') as f:
-            f.write(f'{language}:\t{wer}\t{cer}\n')
+            f.write(f'{language}:\t{wer:.2f}\t{cer:.2f}\n')
 
         with open('sample_predictions.txt', 'a') as f:
             f.write(f'Predictions for {language}:\n')
