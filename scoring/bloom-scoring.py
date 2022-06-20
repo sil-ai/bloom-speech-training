@@ -13,6 +13,7 @@ from clearml.config import config_obj
 from tqdm import tqdm
 from transformers import Wav2Vec2Processor
 from transformers import Wav2Vec2CTCTokenizer
+import re
 
 
 def main():
@@ -58,6 +59,19 @@ def main():
         wer_metric = load_metric("wer")
         cer_metric = load_metric("cer")
 
+        chars_to_ignore = [x for x in '!"&\'()*+,-./0123456789:;=?@[]_`| ¡©«­´·»¿	ʻ	ˈ	̀	́	̂	̃	̆	̈	̌	̠	̧	̱ᐦᐧᐨᐩ​‌‍‑‒–—―‘’“”•… ′	⃣♀♂ꞌ️﻿🐁🐂🐄🐎🐏🐑🐔🐖🐝🐺🦌🇧🇬🇸🇺' if not x.isspace()]
+
+        def subtext(text):
+            for char in chars_to_ignore:
+                text = re.sub(f'[{char}]', '', text)
+            return(text)
+
+        def remove_special_characters(batch):
+            batch["text"] = "".join([' ' if x.isspace() else x for x in batch["text"]])
+            batch["text"] = subtext(batch["text"]).lower() + " "
+
+            return batch
+
         def prepare_dataset(batch):
             audio = batch["audio"]
 
@@ -67,7 +81,7 @@ def main():
             batch["input_length"] = len(batch["input_values"])
             
             with processor.as_target_processor():
-                batch["labels"] = processor(batch["text"]).input_ids
+                batch["labels"] = processor("".join([' ' if x.isspace() else x for x in batch['text']]).lower()).input_ids
             return batch
 
         def clear_unks(text):
@@ -88,7 +102,7 @@ def main():
                     pred_ids = torch.argmax(logits, dim=-1)[0]
 
                     preds.append(clear_unks(processor.decode(pred_ids)))
-                    refs.append(clear_unks(processor.decode(item["labels"])))
+                    refs.append(clear_unks(remove_special_characters(item["labels"])))
                 except:
                     torch.cuda.empty_cache()
                     pass
