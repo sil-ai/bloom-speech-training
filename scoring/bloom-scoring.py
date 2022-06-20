@@ -105,6 +105,8 @@ def main():
             for idx in range(0,10):
                 f.write(f'{preds[idx]}\t{refs[idx]}\n')
 
+        task.upload_artifacts('scores.txt')
+        task.upload_artifacts('sample_predictions.txt')
 
 if __name__ == "__main__":
     main()
