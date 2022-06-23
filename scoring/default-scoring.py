@@ -56,7 +56,7 @@ def main():
         #processor = Wav2Vec2Processor.from_pretrained(repo, use_auth_token=True)
         data = load_dataset('sil-ai/bloom-speech', language, split='test', use_auth_token=True)
         processor = Wav2Vec2Processor.from_pretrained(repo)
-        tokenizer = Wav2Vec2CTCTokenizer.from_pretrained(repo)
+        #tokenizer = Wav2Vec2CTCTokenizer.from_pretrained(repo)
 
         wer_metric = load_metric("wer")
         cer_metric = load_metric("cer")
