@@ -44,18 +44,18 @@ def main():
 
     langs= ['bam', 'boz', 'bzi', 'cak', 'ceb', 'chd', 'eng', 'fra', 'hbb', 'jra', 'kan', 'kek', 'kjb', 'mam', 'mya', 'myk', 'quc', 'sdk', 'snk', 'spa', 'stk', 'tgl', 'tpi']
 
+    repo = 'facebook/wav2vec2-xls-r-300m'
+    model = AutoModelForCTC.from_pretrained(repo).to("cuda")
+    
+        
     with open('default_scores.txt', 'w') as f:
         f.write('lang\twer\tcer\n')
 
-    repo = 'facebook/wav2vec2-xls-r-300m'
-
     for language in langs:
-    
 
-        model = AutoModelForCTC.from_pretrained(repo).to("cuda")
-        #processor = Wav2Vec2Processor.from_pretrained(repo, use_auth_token=True)
+        processor = Wav2Vec2Processor.from_pretrained(f'jnemecek/wav2vec2-bloom-speech-{language}', use_auth_token=True)
         data = load_dataset('sil-ai/bloom-speech', language, split='test', use_auth_token=True)
-        processor = Wav2Vec2Processor.from_pretrained(repo)
+        
         #tokenizer = Wav2Vec2CTCTokenizer.from_pretrained(repo)
 
         wer_metric = load_metric("wer")
