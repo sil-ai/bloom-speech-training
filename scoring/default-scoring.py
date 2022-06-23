@@ -122,8 +122,8 @@ def main():
                 f.write(f'{preds[idx]}\t{refs[idx]}\n')
             f.write('\n')
 
-        task.upload_artifact('local file','scores.txt')
-        task.upload_artifact('local file', 'sample_predictions.txt')
+        task.upload_artifact('local file','default_scores.txt')
+        task.upload_artifact('local file', 'default_sample_predictions.txt')
 
 if __name__ == "__main__":
     main()
